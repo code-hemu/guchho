@@ -1,4 +1,4 @@
-<p align="left">
+<p align="center">
   <a href="https://github.com/code-hemu/guchho">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/code-hemu/guchho/refs/heads/main/resources/light_logo.png" />
@@ -8,7 +8,7 @@
   </a>
 </p>
 
-<p align="left">
+<p align="center">
   <a href="https://www.npmjs.com/package/guchho"><img src="https://img.shields.io/npm/v/guchho" alt="Version"></a>
   <a href="https://github.com/code-hemu/guchho/blob/master/LICENSE"><img src="https://img.shields.io/github/license/code-hemu/guchho" alt="License"></a>
   <a href="https://github.com/code-hemu/guchho/issues"><img src="https://img.shields.io/github/issues/code-hemu/guchho" alt="Issues"></a>
