@@ -1,4 +1,4 @@
-<p align="center">
+<p align="left">
   <a href="https://github.com/code-hemu/guchho">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/code-hemu/guchho/refs/heads/main/resources/light_logo.png" />
