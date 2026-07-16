@@ -8,7 +8,7 @@
   </a>
 </p>
 
-<p align="center">
+<p align="left">
   <a href="https://www.npmjs.com/package/guchho"><img src="https://img.shields.io/npm/v/guchho" alt="Version"></a>
   <a href="https://github.com/code-hemu/guchho/blob/master/LICENSE"><img src="https://img.shields.io/github/license/code-hemu/guchho" alt="License"></a>
   <a href="https://github.com/code-hemu/guchho/issues"><img src="https://img.shields.io/github/issues/code-hemu/guchho" alt="Issues"></a>
