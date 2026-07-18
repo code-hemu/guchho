@@ -1,0 +1,6 @@
+{
+  "entryPoints": ["src/main.js"],
+  "outDir": "dist",
+  "format": "esm",
+  "loader": { ".vue": "vue" }
+}

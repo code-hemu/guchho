@@ -1,0 +1,13 @@
+{
+  "name": "guchho-win32-x64",
+  "version": "1.0.0",
+  "description": "guchho native binary for Windows x64",
+  "license": "MIT",
+  "os": ["win32"],
+  "cpu": ["x64"],
+  "main": "index.js",
+  "files": [
+    "guchho.exe",
+    "index.js"
+  ]
+}

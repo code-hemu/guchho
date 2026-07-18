@@ -1,0 +1,6 @@
+{
+  "entryPoints": ["src/index.jsx"],
+  "outDir": "dist",
+  "format": "esm",
+  "loader": { ".jsx": "jsx" }
+}

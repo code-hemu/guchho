@@ -1,0 +1,21 @@
+Checks: >
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  modernize-*,
+  performance-*,
+  readability-*,
+  -modernize-use-trailing-return-type,
+  -readability-identifier-length
+WarningsAsErrors: '*'
+HeaderFilterRegex: 'include/guchho/.*'
+CheckOptions:
+  readability-identifier-naming.ClassCase: CamelCase
+  readability-identifier-naming.StructCase: CamelCase
+  readability-identifier-naming.FunctionCase: camelBack
+  readability-identifier-naming.VariableCase: camelBack
+  readability-identifier-naming.MemberCase: camelBack
+  readability-identifier-naming.MemberSuffix: '_'
+  readability-identifier-naming.EnumCase: CamelCase
+  readability-identifier-naming.EnumConstantCase: CamelCase
+  readability-identifier-naming.NamespaceCase: CamelCase
+  readability-identifier-naming.ConstantCase: UPPER_CASE

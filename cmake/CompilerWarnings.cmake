@@ -1,0 +1,7 @@
+if(GUCHHO_ENABLE_STRICT_WARNINGS)
+    if(MSVC)
+        add_compile_options(/W4 /permissive- /w14242 /w14254 /w14263 /w14287 /w14296 /w14311)
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+        add_compile_options(-Wall -Wextra -Wpedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2)
+    endif()
+endif()

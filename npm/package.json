@@ -1,0 +1,58 @@
+{
+  "name": "guchho",
+  "version": "1.0.0",
+  "description": "Modern build system for web applications.",
+  "license": "MIT",
+  "author": "Your Name",
+  "homepage": "https://github.com/code-hemu/guchho",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-hemu/guchho.git"
+  },
+  "bugs": {
+    "url": "https://github.com/code-hemu/guchho/issues"
+  },
+  "keywords": [
+    "bundler",
+    "build",
+    "javascript",
+    "typescript",
+    "cpp",
+    "compiler",
+    "vite",
+    "webpack",
+    "esbuild"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "bin": {
+    "guchho": "bin/guchho.js"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "install.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "optionalDependencies": {
+    "guchho-win32-x64": "1.0.0",
+    "guchho-win32-arm64": "1.0.0",
+    "guchho-linux-x64": "1.0.0",
+    "guchho-linux-arm64": "1.0.0",
+    "guchho-linux-arm": "1.0.0",
+    "guchho-darwin-x64": "1.0.0",
+    "guchho-darwin-arm64": "1.0.0"
+  },
+  "scripts": {
+    "postinstall": "node install.js",
+    "pretest": "node -e \"require('fs').cpSync('../build/src/Release/guchho.exe', './bin/guchho.exe', { force: true })\"",
+    "test": "node --test ../tests/js/api/build.test.js ../tests/js/api/transform.test.js ../tests/js/cli/cli.test.js ../tests/js/integration/react.test.js ../tests/js/integration/vue.test.js",
+    "test:js": "node --test ../tests/js/api/build.test.js ../tests/js/api/transform.test.js ../tests/js/cli/cli.test.js ../tests/js/integration/react.test.js ../tests/js/integration/vue.test.js",
+    "test:all": "npm test && cd ../build && ctest -C Release"
+  }
+}
