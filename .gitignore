@@ -1,6 +1,7 @@
 build/
 cmake-build-*/
 out/
+demo/
 
 node_modules/
 npm/node_modules/

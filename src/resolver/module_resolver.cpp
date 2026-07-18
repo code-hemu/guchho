@@ -1,8 +1,9 @@
 #include "resolver/module_resolver.hpp"
-#include "logger.hpp"
-#include "utils/filesystem.hpp"
+#include "logger/logger.hpp"
+#include "fs/fs.hpp"
 
 namespace guchho {
+    using namespace guchho::fs;
 
 ModuleResolver::ModuleResolver(std::vector<std::filesystem::path> lookup_paths)
     : lookup_paths_(std::move(lookup_paths)) {}

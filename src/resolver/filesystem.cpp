@@ -1,7 +1,8 @@
 #include "resolver/filesystem.hpp"
-#include "utils/filesystem.hpp"
+#include "fs/fs.hpp"
 
 namespace guchho {
+    using namespace guchho::fs;
 
 std::filesystem::path resolve_path(const std::filesystem::path &base) {
     if (file_exists(base)) return base;

@@ -1,8 +1,9 @@
 #include "bundle/bundle_writer.hpp"
-#include "logger.hpp"
-#include "utils/filesystem.hpp"
+#include "logger/logger.hpp"
+#include "fs/fs.hpp"
 
 namespace guchho {
+    using namespace guchho::fs;
 
 BundleWriter::BundleWriter(std::filesystem::path out_dir)
     : out_dir_(std::move(out_dir)) {}

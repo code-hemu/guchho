@@ -1,9 +1,10 @@
-#include "logger.hpp"
-#include "utils/filesystem.hpp"
+#include "logger/logger.hpp"
+#include "fs/fs.hpp"
 #include <string>
 #include <filesystem>
 
 namespace guchho {
+    using namespace guchho::fs;
 
 struct JsEntry {
     std::filesystem::path path;

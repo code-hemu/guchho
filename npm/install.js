@@ -7,7 +7,7 @@ const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const knownPlatforms = {
-  'win32-x64': 'guchho-win32-x64',
+  'win32-x64': '@guchho/win32-x64',
   'win32-arm64': 'guchho-win32-arm64',
   'linux-x64': 'guchho-linux-x64',
   'linux-arm64': 'guchho-linux-arm64',

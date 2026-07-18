@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "utils/logger.hpp"
+#include "logger/logger.hpp"
 
 TEST(LoggerTest, LoggerAvailable) {
     auto &l = guchho::log();

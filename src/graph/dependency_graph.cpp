@@ -1,5 +1,5 @@
 #include "graph/dependency_graph.hpp"
-#include "logger.hpp"
+#include "logger/logger.hpp"
 #include <algorithm>
 #include <queue>
 
