@@ -1,0 +1,23 @@
+{
+  "name": "@guchho/win32-arm64",
+  "version": "1.0.0",
+  "description": "The Windows ARM64 binary for guchho, a JavaScript bundler.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-hemu/guchho.git"
+  },
+  "license": "MIT",
+  "files": [
+    "guchho.exe"
+  ],
+  "preferUnplugged": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "arm64"
+  ]
+}

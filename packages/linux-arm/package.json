@@ -1,0 +1,23 @@
+{
+  "name": "@guchho/linux-arm",
+  "version": "1.0.0",
+  "description": "The Linux ARM binary for guchho, a JavaScript bundler.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-hemu/guchho.git"
+  },
+  "license": "MIT",
+  "files": [
+    "guchho"
+  ],
+  "preferUnplugged": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm"
+  ]
+}

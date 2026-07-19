@@ -1,0 +1,23 @@
+{
+  "name": "@guchho/darwin-x64",
+  "version": "1.0.0",
+  "description": "The macOS 64-bit binary for guchho, a JavaScript bundler.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-hemu/guchho.git"
+  },
+  "license": "MIT",
+  "files": [
+    "guchho"
+  ],
+  "preferUnplugged": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "x64"
+  ]
+}
