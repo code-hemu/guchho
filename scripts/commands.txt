@@ -1,0 +1,13 @@
+./scripts/build.sh release-win32-x64
+./scripts/build.sh debug-win32-x64
+
+./scripts/build.sh release-linux-x64
+./scripts/build.sh debug-linux-x64
+
+./scripts/build.sh release-darwin-arm64
+./scripts/build.sh debug-darwin-arm64
+
+
+# git commands
+
+bash scripts/build.sh
