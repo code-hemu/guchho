@@ -1,0 +1,79 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "cmake: build debug",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build/debug"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "cmake: configure + build debug",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--preset",
+                "debug"
+            ],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build script (PowerShell)",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-File",
+                "${workspaceFolder}/scripts/build.ps1"
+            ],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "cmake: build release",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "--preset",
+                "release"
+            ],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "cmake: run tests",
+            "type": "shell",
+            "command": "ctest",
+            "args": [
+                "--preset",
+                "debug",
+                "--output-on-failure"
+            ],
+            "group": "test",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        }
+    ]
+}

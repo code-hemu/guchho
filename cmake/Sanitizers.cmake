@@ -1,0 +1,11 @@
+function(guchho_enable_sanitizers TARGET)
+    if(GUCHHO_ENABLE_ASAN AND CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+        target_compile_options(${TARGET} PRIVATE -fsanitize=address -fno-omit-frame-pointer)
+        target_link_options(${TARGET} PRIVATE -fsanitize=address)
+    endif()
+
+    if(GUCHHO_ENABLE_UBSAN AND CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+        target_compile_options(${TARGET} PRIVATE -fsanitize=undefined)
+        target_link_options(${TARGET} PRIVATE -fsanitize=undefined)
+    endif()
+endfunction()
