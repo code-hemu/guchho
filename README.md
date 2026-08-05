@@ -17,7 +17,7 @@
 </p>
 
 
-| Package Manager | Install from | Status |
+| Distribution | Install from | Status |
 | :-------------: | ------------ | ------ |
 | <img src="https://raw.githubusercontent.com/npm/logos/master/npm%20logo/npm-logo-red.svg" height="30" alt="npm"> | **npm**<br>`npm install -g guchho` | 🚧 Coming Soon |
 | <img src="https://community.chocolatey.org/content/packageimages/chocolatey.2.5.1.png" height="42" alt="Chocolatey"> | **Chocolatey**<br>`choco install guchho` | 🚧 Coming Soon |
