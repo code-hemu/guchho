@@ -20,4 +20,14 @@ tests/
     ├── CMakeLists.txt
     └── parser_benchmark.cpp
 
-
+CLI STYLE
+guchho build
+guchho dev
+guchho test
+guchho fmt
+guchho lint
+guchho publish
+guchho doctor
+guchho init
+guchho create
+guchho upgrade 
