@@ -30,6 +30,8 @@ dist/
 *.profraw
 *.profdata
 
+compile_commands.json
+
 __pycache__/
 *.pyc
 

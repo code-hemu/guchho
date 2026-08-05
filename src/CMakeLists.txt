@@ -2,8 +2,7 @@
 
 set(GUCHHO_SOURCES
     # helpers
-    
-    
+    helpers/utf8.cpp
 )
 
 # Library
