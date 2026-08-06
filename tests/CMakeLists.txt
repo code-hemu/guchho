@@ -20,6 +20,7 @@ include(GoogleTest)
 add_executable(guchho_tests
     main.cpp
     helpers/utf8_test.cpp
+    logger/massage_test.cpp
 )
 
 target_link_libraries(

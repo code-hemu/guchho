@@ -3,6 +3,7 @@
 set(GUCHHO_SOURCES
     # helpers
     helpers/utf8.cpp
+    core/logger/massage.cpp
 )
 
 # Library

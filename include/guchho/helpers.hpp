@@ -6,6 +6,7 @@
 #include <string>
 #include <span>
 
+
 namespace guchho::helpers {
 std::pair<char32_t, int>                DecodeWTF8Rune(std::string_view text);
 int                                     EncodeWTF8Rune(char* buffer, char32_t code_point);

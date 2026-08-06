@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "helpers/utf8.hpp"
+#include "guchho/helpers.hpp"
 
 #include <string>
 #include <string_view>
@@ -255,7 +255,7 @@ TEST(UTF16RoundTrip, Various)
         "hello",
         "\xC3\xA9",
         "\xF0\x9F\x98\x80",
-        "a\xF0\x9F\x98\x80" "b\xC3\xA9" "c",
+        "a\xF0\x9F\x98\x80 b\xC3\xA9 c",
     };
     for (auto const& s : cases) {
         auto u16 = StringToUTF16(s);
