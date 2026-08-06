@@ -17,6 +17,7 @@ using guchho::helpers::UTF16EqualsUTF16;
 using guchho::helpers::UTF16ToString;
 using guchho::helpers::UTF16ToStringWithValidation;
 using guchho::helpers::DecodeLastRuneInString;
+using guchho::helpers::DecodeRuneInString;
 
 // ---------------------------------------------------------------------------
 // EncodeWTF8Rune
@@ -432,5 +433,92 @@ TEST(DecodeLastRuneInStringTest, TrailingASCII)
         DecodeLastRuneInString("\xF0\x9F\x98\x80!");
 
     EXPECT_EQ(r, U'!');
+    EXPECT_EQ(width, 1);
+}
+
+// ---------------------------------------------------------------------------
+// DecodeRuneInString
+// ---------------------------------------------------------------------------
+
+TEST(DecodeRuneInStringTest, EmptyString)
+{
+    auto [rune, width] = DecodeRuneInString("");
+
+    EXPECT_EQ(rune, kRuneError);
+    EXPECT_EQ(width, 0);
+}
+
+TEST(DecodeRuneInStringTest, ASCII)
+{
+    auto [rune, width] = DecodeRuneInString("A");
+
+    EXPECT_EQ(rune, U'A');
+    EXPECT_EQ(width, 1);
+}
+
+TEST(DecodeRuneInStringTest, TwoByteRune)
+{
+    auto [rune, width] = DecodeRuneInString("¢");
+
+    EXPECT_EQ(rune, U'¢');
+    EXPECT_EQ(width, 2);
+}
+
+TEST(DecodeRuneInStringTest, ThreeByteRune)
+{
+    auto [rune, width] = DecodeRuneInString("✓");
+
+    EXPECT_EQ(rune, U'✓');
+    EXPECT_EQ(width, 3);
+}
+
+TEST(DecodeRuneInStringTest, FourByteRune)
+{
+    auto [rune, width] = DecodeRuneInString("😀");
+
+    EXPECT_EQ(rune, U'😀');
+    EXPECT_EQ(width, 4);
+}
+
+TEST(DecodeRuneInStringTest, StopsAfterFirstRune)
+{
+    auto [rune, width] = DecodeRuneInString("✓abc");
+
+    EXPECT_EQ(rune, U'✓');
+    EXPECT_EQ(width, 3);
+}
+
+TEST(DecodeRuneInStringTest, InvalidLeadingByte)
+{
+    std::string text;
+    text.push_back(static_cast<char>(0xFF));
+
+    auto [rune, width] = DecodeRuneInString(text);
+
+    EXPECT_EQ(rune, kRuneError);
+    EXPECT_EQ(width, 1);
+}
+
+TEST(DecodeRuneInStringTest, TruncatedSequence)
+{
+    std::string text;
+    text.push_back(static_cast<char>(0xE2));
+
+    auto [rune, width] = DecodeRuneInString(text);
+
+    EXPECT_EQ(rune, kRuneError);
+    EXPECT_EQ(width, 1);
+}
+
+TEST(DecodeRuneInStringTest, InvalidContinuationByte)
+{
+    std::string text;
+    text.push_back(static_cast<char>(0xE2));
+    text.push_back('A');
+    text.push_back(static_cast<char>(0x80));
+
+    auto [rune, width] = DecodeRuneInString(text);
+
+    EXPECT_EQ(rune, kRuneError);
     EXPECT_EQ(width, 1);
 }

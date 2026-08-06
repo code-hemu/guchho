@@ -10,6 +10,7 @@
 namespace guchho::helpers {
 std::pair<char32_t, int>                DecodeWTF8Rune(std::string_view text);
 std::pair<char32_t, int>                DecodeLastRuneInString(std::string_view text);
+std::pair<char32_t, int>                DecodeRuneInString(std::string_view text);
 int                                     EncodeWTF8Rune(char* buffer, char32_t code_point);
 bool                                    ContainsNonBMPCodePoint(std::string_view text);
 bool                                    ContainsNonBMPCodePointUTF16(std::span<const char16_t> text);

@@ -396,4 +396,117 @@ std::pair<char32_t, int> DecodeLastRuneInString(std::string_view text)
     return {rune, width};
 }
 
+// UTF-8 string-এর প্রথম rune (Unicode code point) decode করে।
+//
+// Return:
+//   first  -> decode করা Unicode code point
+//   second -> rune decode করতে ব্যবহৃত byte-এর সংখ্যা
+//
+// যদি UTF-8 sequence অবৈধ (invalid) হয়:
+//   {kRuneError, 1} return করে।
+//
+// যদি string খালি (empty) হয়:
+//   {kRuneError, 0} return করে।
+std::pair<char32_t, int> DecodeRuneInString(std::string_view text)
+{
+    if (text.empty()) {
+        return {kRuneError, 0};
+    }
+
+    const unsigned char b0 = static_cast<unsigned char>(text[0]);
+
+    // ASCII
+    if (b0 < 0x80) {
+        return {static_cast<char32_t>(b0), 1};
+    }
+
+    int width;
+
+    if ((b0 & 0xE0) == 0xC0) {
+        width = 2;
+    } else if ((b0 & 0xF0) == 0xE0) {
+        width = 3;
+    } else if ((b0 & 0xF8) == 0xF0) {
+        width = 4;
+    } else {
+        return {kRuneError, 1};
+    }
+
+    if (text.size() < static_cast<size_t>(width)) {
+        return {kRuneError, 1};
+    }
+
+    char32_t rune = 0;
+
+    switch (width) {
+        case 2: {
+            const unsigned char b1 = static_cast<unsigned char>(text[1]);
+
+            if ((b1 & 0xC0) != 0x80) {
+                return {kRuneError, 1};
+            }
+
+            rune =
+                ((b0 & 0x1F) << 6) |
+                (b1 & 0x3F);
+
+            if (rune < 0x80) {
+                return {kRuneError, 1};
+            }
+
+            break;
+        }
+
+        case 3: {
+            const unsigned char b1 = static_cast<unsigned char>(text[1]);
+            const unsigned char b2 = static_cast<unsigned char>(text[2]);
+
+            if ((b1 & 0xC0) != 0x80 ||
+                (b2 & 0xC0) != 0x80) {
+                return {kRuneError, 1};
+            }
+
+            rune =
+                ((b0 & 0x0F) << 12) |
+                ((b1 & 0x3F) << 6) |
+                (b2 & 0x3F);
+
+            // Overlong বা surrogate invalid
+            if (rune < 0x800 ||
+                (rune >= 0xD800 && rune <= 0xDFFF)) {
+                return {kRuneError, 1};
+            }
+
+            break;
+        }
+
+        case 4: {
+            const unsigned char b1 = static_cast<unsigned char>(text[1]);
+            const unsigned char b2 = static_cast<unsigned char>(text[2]);
+            const unsigned char b3 = static_cast<unsigned char>(text[3]);
+
+            if ((b1 & 0xC0) != 0x80 ||
+                (b2 & 0xC0) != 0x80 ||
+                (b3 & 0xC0) != 0x80) {
+                return {kRuneError, 1};
+            }
+
+            rune =
+                ((b0 & 0x07) << 18) |
+                ((b1 & 0x3F) << 12) |
+                ((b2 & 0x3F) << 6) |
+                (b3 & 0x3F);
+
+            if (rune < 0x10000 ||
+                rune > 0x10FFFF) {
+                return {kRuneError, 1};
+            }
+
+            break;
+        }
+    }
+
+    return {rune, width};
+}
+
 } 
