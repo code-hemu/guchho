@@ -1,35 +1,7 @@
-// #pragma once
-
-
-
-
-
-// namespace guchho::logger {
- 
-
-
-// enum class LogLevel : int8_t {
-//     kNone,
-//     kVerbose,
-//     kDebug,
-//     kInfo,
-//     kWarning,
-//     kError,
-//     kSilent,
-// };
-
-
-
-// } 
-
-
-
-
-
 #pragma once
 #include <functional>
 #include <vector>
-// #include <string>
+#include <string>
 #include <cstdint>
 #include <string_view>
 #include <unordered_map>
@@ -52,9 +24,8 @@ enum class LogLevel : int8_t {
 // কারণ error-কে warning বা info করলে build ভুলভাবে সফল হতে পারে. 
 // Debug বা internal message-এরও কোনো Message ID থাকে না. 
 // এসব ক্ষেত্রে kNone ব্যবহার করা হয়.
-
 enum class MsgID : uint8_t {
-    kNone = 0,
+    kNone,
 
     // JavaScript
     kJS_AssertToWith,
@@ -140,6 +111,17 @@ enum class MsgID : uint8_t {
     kEND,
 };
 
+
+// Log message-এর ধরন।
+enum class MsgKind : uint8_t {
+    kError,    // Error
+    kWarning,  // Warning
+    kInfo,     // Information
+    kNote,     // অতিরিক্ত তথ্য
+    kDebug,    // Debug তথ্য
+    kVerbose,  // বিস্তারিত Debug তথ্য
+};
+
 struct Msg
 {
 
@@ -155,9 +137,14 @@ struct Log
     std::unordered_map<MsgID, LogLevel> overrides;
 };
 
+
+// message.cpp
 void             StringToMsgIDs(std::string_view str, LogLevel logLevel, std::unordered_map<MsgID, LogLevel>& overrides);
 std::string_view MsgIDToString(MsgID id);
-MsgID StringToMaximumMsgID(std::string_view id);
+MsgID            StringToMaximumMsgID(std::string_view id);
+
+
+
 
 
 }
