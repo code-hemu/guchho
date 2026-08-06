@@ -1,3 +1,70 @@
+// -----------------------------------------------------------------------------
+// Logging System সম্পর্কে বিস্তারিত:
+//
+// এই logging system দুই ধরনের output mode সমর্থন করে:
+//
+// 1. NewStderrLog
+//    - Log message সরাসরি stderr (standard error stream)-এ পাঠায়।
+//    - সাধারণত CLI application চালানোর সময় ব্যবহার করা হয়।
+//    - Error, warning, info ইত্যাদি message terminal-এ সাথে সাথে দেখা যায়।
+//    - Build process চলার সময় user-কে real-time feedback দেওয়ার জন্য এটি গুরুত্বপূর্ণ।
+//
+// 2. NewDeferLog
+//    - Log message সরাসরি terminal-এ না দেখিয়ে memory-এর ভিতরে জমা রাখে।
+//    - Parsing বা processing-এর সময় সাময়িকভাবে message ধরে রাখার জন্য ব্যবহার করা হয়।
+//    - Incremental build system-এ এটি অনেক গুরুত্বপূর্ণ।
+//
+// Incremental build-এর ক্ষেত্রে:
+//
+// সাধারণ build system-এ প্রতিবার সব file আবার parse করা হয় না।
+// শুধুমাত্র যেসব file পরিবর্তন হয়েছে সেগুলো পুনরায় parse করা হয়।
+//
+// উদাহরণ:
+//   - file A parse করার সময় কিছু warning পাওয়া গেল।
+//   - সেই warning গুলো memory log array-তে রাখা হলো।
+//   - পরে build process বুঝলো file A আবার parse করার প্রয়োজন নেই।
+//   - তখন আগের stored log message memory থেকে replay করা যায়।
+//
+// এর ফলে:
+//   - অপ্রয়োজনীয় parsing কমে।
+//   - একই error/warning বারবার generate করতে হয় না।
+//   - incremental build অনেক দ্রুত হয়।
+//
+// Error streaming:
+//
+// Error message asynchronous ভাবে stream করা হয়।
+// অর্থাৎ error তৈরি হওয়ার সাথে সাথেই log system সেটি process করতে পারে,
+// পুরো build শেষ হওয়ার জন্য অপেক্ষা করতে হয় না।
+//
+// প্রতিটি error message-এর মধ্যে সাধারণত থাকে:
+//
+//   - Error কোন file-এ হয়েছে
+//   - কোন line এবং column-এ হয়েছে
+//   - যে source line-এ সমস্যা হয়েছে তার text
+//   - Error description
+//   - প্রয়োজনে suggestion বা fix hint
+//
+// উদাহরণ:
+//
+//   src/main.js:10:5:
+//   const x = ;
+//           ^
+//   Expected expression
+//
+// Message limit:
+//
+// অনেক বড় project build করার সময় হাজার হাজার error বা warning তৈরি হতে পারে।
+// সব message terminal-এ দেখালে output unusable হয়ে যেতে পারে।
+//
+// তাই default ভাবে error/warning count সীমিত রাখা হয়।
+//
+// উদাহরণ:
+//
+//   error: 1000 messages generated
+//   showing first 50 messages
+//
+// এতে terminal পরিষ্কার থাকে এবং গুরুত্বপূর্ণ error আগে দেখা যায়।
+
 #pragma once
 #include <functional>
 #include <vector>
@@ -463,8 +530,6 @@ void             WriteStringWithColor(int fd, const std::string& text);
 void             StringToMsgIDs(std::string_view str, LogLevel logLevel, std::unordered_map<MsgID, LogLevel>& overrides);
 std::string_view MsgIDToString(MsgID id);
 MsgID            StringToMaximumMsgID(std::string_view id);
-
-
 
 }
 

@@ -422,6 +422,15 @@ void PlatformIndependentPathDirBaseExt(const std::string& path, std::string& dir
     }
 }
 
+// নির্বাচিত style-এর path ফেরত দেয়।
+// kRelPath হলে relative path (যদি খালি না হয়), অন্যথায় absolute path।
+std::string PrettyPaths::Select(PathStyle style) const {
+    if (style == PathStyle::kRelPath && !rel.empty()) {
+        return rel;
+    }
+    return abs;
+}
+
 // Message ID-এর জন্য কোনো log level override প্রয়োগ করে।
 //
 // যদি overrides-এ দেওয়া ID পাওয়া যায়, তাহলে সংশ্লিষ্ট
@@ -1057,6 +1066,11 @@ std::string MsgString(bool include_source, PathStyle path_style, const TerminalI
         location);
 }
 
+// Options এবং terminal তথ্য ব্যবহার করে message-কে formatted string-এ রূপান্তর করে।
+std::string Msg::String(const OutputOptions& options, const TerminalInfo& terminal_info) const {
+    return MsgString(options.include_source, options.path_style, terminal_info, id, kind, data, plugin_name);
+}
+
 
 //------------------------------------------------------------------------------
 // Standard error (stderr) ভিত্তিক logger তৈরি করে।
@@ -1085,6 +1099,7 @@ std::string MsgString(bool include_source, PathStyle path_style, const TerminalI
 Log NewStderrLog(const OutputOptions& options)
 {
     auto    state = std::make_shared<StderrLogState>();
+    state-> options = options;
     state-> terminal_info = GetTerminalInfo(2);
     state-> remainingMessagesBeforeLimit = options.message_limit > 0 ? options.message_limit : 0x7FFFFFFF;
 

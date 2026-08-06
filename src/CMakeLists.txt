@@ -3,7 +3,11 @@
 set(GUCHHO_SOURCES
     # helpers
     helpers/utf8.cpp
+
+    # core/logger
     core/logger/message.cpp
+    core/logger/logger.cpp
+    core/logger/terminal.cpp
 )
 
 # Library

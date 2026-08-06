@@ -21,6 +21,7 @@ add_executable(guchho_tests
     main.cpp
     helpers/utf8_test.cpp
     logger/message_test.cpp
+    logger/logger_test.cpp
 )
 
 target_link_libraries(
