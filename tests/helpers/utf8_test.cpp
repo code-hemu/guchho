@@ -4,6 +4,9 @@
 #include <string>
 #include <string_view>
 
+constexpr char32_t kRuneError = U'\uFFFD';
+constexpr char32_t kMaxRune   = 0x10FFFF;
+
 using guchho::helpers::ContainsNonBMPCodePoint;
 using guchho::helpers::ContainsNonBMPCodePointUTF16;
 using guchho::helpers::DecodeWTF8Rune;
@@ -13,6 +16,7 @@ using guchho::helpers::UTF16EqualsString;
 using guchho::helpers::UTF16EqualsUTF16;
 using guchho::helpers::UTF16ToString;
 using guchho::helpers::UTF16ToStringWithValidation;
+using guchho::helpers::DecodeLastRuneInString;
 
 // ---------------------------------------------------------------------------
 // EncodeWTF8Rune
@@ -359,4 +363,74 @@ TEST(UTF16EqualsUTF16Test, BothEmpty)
     EXPECT_TRUE(UTF16EqualsUTF16(u"", u""));
 }
 
+// ---------------------------------------------------------------------------
+// DecodeLastRuneInString
+// ---------------------------------------------------------------------------
 
+TEST(DecodeLastRuneInStringTest, Empty)
+{
+    auto [r, width] = DecodeLastRuneInString("");
+
+    EXPECT_EQ(r, kRuneError);
+    EXPECT_EQ(width, 0);
+}
+
+TEST(DecodeLastRuneInStringTest, ASCII)
+{
+    auto [r, width] = DecodeLastRuneInString("abc");
+
+    EXPECT_EQ(r, U'c');
+    EXPECT_EQ(width, 1);
+}
+
+TEST(DecodeLastRuneInStringTest, TwoByteUTF8)
+{
+    auto [r, width] = DecodeLastRuneInString("\xC3\xA9"); // é
+
+    EXPECT_EQ(r, U'é');
+    EXPECT_EQ(width, 2);
+}
+
+TEST(DecodeLastRuneInStringTest, ThreeByteUTF8)
+{
+    auto [r, width] = DecodeLastRuneInString("\xE3\x81\x82"); // あ
+
+    EXPECT_EQ(r, U'あ');
+    EXPECT_EQ(width, 3);
+}
+
+TEST(DecodeLastRuneInStringTest, FourByteUTF8)
+{
+    auto [r, width] = DecodeLastRuneInString("\xF0\x9F\x98\x80"); // 😀
+
+    EXPECT_EQ(r, U'😀');
+    EXPECT_EQ(width, 4);
+}
+
+TEST(DecodeLastRuneInStringTest, MixedASCIIAndUTF8)
+{
+    auto [r, width] =
+        DecodeLastRuneInString("abc\xF0\x9F\x98\x80"); // abc😀
+
+    EXPECT_EQ(r, U'😀');
+    EXPECT_EQ(width, 4);
+}
+
+TEST(DecodeLastRuneInStringTest, InvalidSequence)
+{
+    std::string s("\xF0\x9F\x98", 3);
+
+    auto [r, width] = DecodeLastRuneInString(s);
+
+    EXPECT_EQ(r, kRuneError);
+    EXPECT_EQ(width, 1);
+}
+
+TEST(DecodeLastRuneInStringTest, TrailingASCII)
+{
+    auto [r, width] =
+        DecodeLastRuneInString("\xF0\x9F\x98\x80!");
+
+    EXPECT_EQ(r, U'!');
+    EXPECT_EQ(width, 1);
+}

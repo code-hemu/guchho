@@ -20,11 +20,11 @@ std::pair<char32_t, int> DecodeWTF8Rune(std::string_view text)
 {
     const size_t n = text.size();
 
-    if (n < 1) {
+    if (n == 0) {
         return {kRuneError, 0};
     }
 
-    const unsigned char s0 = static_cast<unsigned char>(text[0]);
+    const auto s0 = static_cast<unsigned char>(text[0]);
 
     // ASCII
     if (s0 < 0x80) {
@@ -47,7 +47,7 @@ std::pair<char32_t, int> DecodeWTF8Rune(std::string_view text)
         return {kRuneError, 0};
     }
 
-    const unsigned char s1 = static_cast<unsigned char>(text[1]);
+    const auto s1 = static_cast<unsigned char>(text[1]);
 
     if ((s1 & 0xC0) != 0x80) {
         return {kRuneError, 1};
@@ -58,6 +58,7 @@ std::pair<char32_t, int> DecodeWTF8Rune(std::string_view text)
             (static_cast<char32_t>(s0 & 0x1F) << 6) |
             static_cast<char32_t>(s1 & 0x3F);
 
+        // Overlong encoding
         if (cp < 0x80) {
             return {kRuneError, 1};
         }
@@ -65,7 +66,7 @@ std::pair<char32_t, int> DecodeWTF8Rune(std::string_view text)
         return {cp, 2};
     }
 
-    const unsigned char s2 = static_cast<unsigned char>(text[2]);
+    const auto s2 = static_cast<unsigned char>(text[2]);
 
     if ((s2 & 0xC0) != 0x80) {
         return {kRuneError, 1};
@@ -77,14 +78,16 @@ std::pair<char32_t, int> DecodeWTF8Rune(std::string_view text)
             (static_cast<char32_t>(s1 & 0x3F) << 6) |
             static_cast<char32_t>(s2 & 0x3F);
 
-        if (cp < 0x0800) {
+        // Overlong encoding
+        if (cp < 0x800) {
             return {kRuneError, 1};
         }
 
+        // WTF-8 allows surrogate code points.
         return {cp, 3};
     }
 
-    const unsigned char s3 = static_cast<unsigned char>(text[3]);
+    const auto s3 = static_cast<unsigned char>(text[3]);
 
     if ((s3 & 0xC0) != 0x80) {
         return {kRuneError, 1};
@@ -96,7 +99,13 @@ std::pair<char32_t, int> DecodeWTF8Rune(std::string_view text)
         (static_cast<char32_t>(s2 & 0x3F) << 6) |
         static_cast<char32_t>(s3 & 0x3F);
 
-    if (cp < kSurrogateOffset || cp > kMaxRune) {
+    // Overlong encoding
+    if (cp < 0x10000) {
+        return {kRuneError, 1};
+    }
+
+    // Outside the Unicode range.
+    if (cp > kMaxRune) {
         return {kRuneError, 1};
     }
 
@@ -357,6 +366,34 @@ bool UTF16EqualsUTF16(std::span<const char16_t> a, std::span<const char16_t> b)
     }
 
     return false;
+}
+
+// UTF-8 string-এর শেষ rune decode করে।
+// Return:
+//   first  -> decoded Unicode code point
+//   second -> rune-এর byte length
+std::pair<char32_t, int> DecodeLastRuneInString(std::string_view text)
+{
+    if (text.empty()) {
+        return {kRuneError, 0};
+    }
+
+    size_t i = text.size() - 1;
+
+    // শেষ rune-এর প্রথম byte খুঁজে বের করো।
+    while (i > 0 &&
+           (static_cast<unsigned char>(text[i]) & 0xC0) == 0x80) {
+        --i;
+    }
+
+    auto [rune, width] = DecodeWTF8Rune(text.substr(i));
+
+    // DecodeWTF8Rune() পুরো rune consume করেছে কিনা নিশ্চিত করো।
+    if (width != static_cast<int>(text.size() - i)) {
+        return {kRuneError, 1};
+    }
+
+    return {rune, width};
 }
 
 } 
