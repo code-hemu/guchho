@@ -15,13 +15,18 @@ FetchContent_MakeAvailable(googletest)
 include(GoogleTest)
 
 
+# Test subdirectories
+
+add_subdirectory(helpers)
+add_subdirectory(logger)
+
+
 # Test executable
 
 add_executable(guchho_tests
     main.cpp
-    helpers/utf8_test.cpp
-    logger/message_test.cpp
-    logger/logger_test.cpp
+    $<TARGET_OBJECTS:guchho_helpers_tests>
+    $<TARGET_OBJECTS:guchho_logger_tests>
 )
 
 target_link_libraries(
