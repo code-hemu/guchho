@@ -19,6 +19,7 @@ include(GoogleTest)
 
 add_subdirectory(helpers)
 add_subdirectory(logger)
+add_subdirectory(cli)
 
 
 # Test executable
@@ -27,6 +28,7 @@ add_executable(guchho_tests
     main.cpp
     $<TARGET_OBJECTS:guchho_helpers_tests>
     $<TARGET_OBJECTS:guchho_logger_tests>
+    $<TARGET_OBJECTS:guchho_cli_tests>
 )
 
 target_link_libraries(

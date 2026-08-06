@@ -47,7 +47,10 @@ add_executable(guchho)
 target_sources(guchho
     PRIVATE
         main.cpp
+        cli/cli.cpp
 )
+
+target_compile_definitions(guchho PRIVATE GUCHHO_VERSION_STRING="${PROJECT_VERSION}")
 
 guchho_enable_resources(guchho)
 
