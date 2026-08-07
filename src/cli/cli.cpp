@@ -1,5 +1,3 @@
-#include "cli.hpp"
-
 #include "guchho/logger.hpp"
 
 #include <filesystem>
@@ -10,6 +8,10 @@
 
 namespace guchho::cli {
 namespace logger = guchho::logger;
+
+constexpr int kExitOk    = 0;
+constexpr int kExitError = 1;
+constexpr int kExitUsage = 2;
 
 std::string VersionString()
 {
